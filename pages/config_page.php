@@ -1,84 +1,98 @@
 <?php
-auth_reauthenticate( );
-access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
+auth_reauthenticate();
+access_ensure_global_level(config_get('manage_plugin_threshold'));
 
-html_page_top( lang_get( 'plugin_format_title' ) );
+layout_page_header(plugin_lang_get('plugin_title'));
+layout_page_begin('manage_overview_page.php');
 
-print_manage_menu( );
-
+print_manage_menu();
 ?>
 
-<br/>
+<div class="col-md-12 col-xs-12">
+    <div class="space-10"></div>
 
-<form action="<?php echo plugin_page( 'config_update' ) ?>" method="post">
-<?php echo form_security_field( 'plugin_CustomID_config_update' ) ?>
-<table align="center" class="width75" cellspacing="1">
-<tr>
-	<td class="form-title" colspan="3">
-		<?php echo plugin_lang_get( 'plugin_title' ) . ': ' . plugin_lang_get( 'config' ) ?>
-	</td>
-</tr>
+    <div class="form-container">
+        <form action="<?php echo plugin_page('config_update') ?>" method="post">
+            <?php echo form_security_field('plugin_CustomID_config_update') ?>
 
-<tr <?php echo helper_alternate_class() ?> >
-	<td class="category" width="60%">
-		<?php echo plugin_lang_get( 'project_name' ) ?>
-	</td>
-	<td width="20%">
-		<select name="customid_project_id">
-			<option value="0" selected="selected"><?php echo lang_get( 'all_projects' ); ?></option>
-			<?php print_project_option_list( plugin_config_get('project_id'), false ) ?>
-		</select>
-	</td>
-</tr>
+            <div class="widget-box widget-color-blue2">
+                <div class="widget-header widget-header-small">
+                    <h4 class="widget-title lighter">
+                        <?php echo plugin_lang_get('plugin_title') . ': ' . plugin_lang_get('config') ?>
+                    </h4>
+                </div>
 
-<tr <?php echo helper_alternate_class() ?> >
-	<td class="category" width="60%">
-		<?php echo lang_get( 'custom_field' ) ?>
-	</td>
-	<td width="20%">
-		<select name="customid_field_id">
-			<?php
-				$t_custom_fields = custom_field_get_ids();
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-condensed table-striped">
+                                <tr>
+                                    <th class="category width-60">
+                                        <?php echo plugin_lang_get('project_name') ?>
+                                    </th>
+                                    <td>
+                                        <select name="customid_project_id" class="input-sm">
+                                            <option value="0" <?php check_selected(plugin_config_get('project_id'), 0); ?>>
+                                                <?php echo lang_get('all_projects'); ?>
+                                            </option>
+                                            <?php print_project_option_list(plugin_config_get('project_id'), false); ?>
+                                        </select>
+                                    </td>
+                                </tr>
 
-				foreach( $t_custom_fields as $t_field_id )
-				{
-					$t_desc = custom_field_get_definition( $t_field_id );
-					echo "<option value=\"$t_field_id\"";
-					check_selected($t_field_id, plugin_config_get('field_id') );
-					echo ">" . string_attribute( $t_desc['name'] ) . '</option>' ;
-				}
-			?>
-		</select>
-	</td>
-</tr>
+                                <tr>
+                                    <th class="category width-60">
+                                        <?php echo lang_get('custom_field') ?>
+                                    </th>
+                                    <td>
+                                        <select name="customid_field_id" class="input-sm">
+                                            <?php
+                                            $t_custom_fields = custom_field_get_ids();
 
-<tr <?php echo helper_alternate_class() ?> >
-	<td class="category" width="60%">
-		<?php echo plugin_lang_get( 'config_prefix' ) ?>
-	</td>
-	<td width="20%">
-		<input name="customid_prefix" size="30" value="<?php echo plugin_config_get('prefix') ?>">
-	</td>
-</tr>
+                                            foreach ($t_custom_fields as $t_field_id) {
+                                                $t_desc = custom_field_get_definition($t_field_id);
+                                                echo '<option value="' . $t_field_id . '"';
+                                                check_selected($t_field_id, plugin_config_get('field_id'));
+                                                echo '>' . string_attribute($t_desc['name']) . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
 
-<tr <?php echo helper_alternate_class() ?> >
-	<td class="category" width="60%">
-		<?php echo plugin_lang_get( 'config_prefix_two' ) ?>
-	</td>
-	<td width="20%">
-		<input name="customid_prefix_two" size="30" value="<?php echo plugin_config_get('prefix_two') ?>">
-	</td>
-</tr>
-<tr>
-	<td class="center" colspan="2">
-		<input type="submit" class="button" value="<?php echo plugin_lang_get( 'update_config' ) ?>" />
-	</td>
-</tr>
+                                <tr>
+                                    <th class="category width-60">
+                                        <?php echo plugin_lang_get('config_prefix') ?>
+                                    </th>
+                                    <td>
+                                        <input name="customid_prefix" class="input-sm" size="30"
+                                               value="<?php echo string_attribute(plugin_config_get('prefix')) ?>">
+                                    </td>
+                                </tr>
 
+                                <tr>
+                                    <th class="category width-60">
+                                        <?php echo plugin_lang_get('config_prefix_two') ?>
+                                    </th>
+                                    <td>
+                                        <input name="customid_prefix_two" class="input-sm" size="30"
+                                               value="<?php echo string_attribute(plugin_config_get('prefix_two')) ?>">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
 
-</table>
-
-</form>
+                    <div class="widget-toolbox padding-8 clearfix">
+                        <input type="submit" class="btn btn-primary btn-white btn-sm btn-round"
+                               value="<?php echo plugin_lang_get('update_config') ?>" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <?php
-html_page_bottom();
+layout_page_end();
+?>

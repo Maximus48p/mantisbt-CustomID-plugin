@@ -1,0 +1,8 @@
+<?php
+
+$s_plugin_CustomID_plugin_title = 'CustomID';
+$s_plugin_CustomID_config = 'Configuratie';
+$s_plugin_CustomID_project_name = 'Projectnaam';
+$s_plugin_CustomID_update_config = 'Configuratie bijwerken';
+$s_plugin_CustomID_config_prefix = 'Voorvoegsel';
+$s_plugin_CustomID_config_prefix_two = 'Voorvoegsel voor onderliggende issues';
